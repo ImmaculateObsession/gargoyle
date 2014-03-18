@@ -141,7 +141,7 @@ class Pebble(ConditionSet):
 
     def get_field_value(self, instance, field_name):
         if field_name == 'pebble':
-            return getattr(instance, 'pebble')
+            return getattr(instance, 'pebble').id
 
     def get_group_label(self):
         return 'Pebble'
