@@ -13,6 +13,7 @@ from gargoyle.conditions import ModelConditionSet, RequestConditionSet, Percent,
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.core.validators import validate_ipv4_address
+from django.http import HttpRequest
 
 import socket
 import struct
@@ -113,3 +114,15 @@ class HostConditionSet(ConditionSet):
         return 'Host'
 
 gargoyle.register(HostConditionSet())
+
+
+class Pebble(ConditionSet):
+
+    def can_execute(self, instance):
+        return isinstance(instance, (HttpRequest,))
+
+    def get_field_value(self, request, field_name):
+        if field_name == 'pebble':
+            return getattr(request, 'pebble')
+
+gargoyle.register(Pebble())
