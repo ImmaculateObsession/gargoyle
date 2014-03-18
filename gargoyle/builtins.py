@@ -125,4 +125,7 @@ class Pebble(ConditionSet):
         if field_name == 'pebble':
             return getattr(request, 'pebble')
 
+    def get_group_label(self):
+        return 'Pebble'
+
 gargoyle.register(Pebble())
