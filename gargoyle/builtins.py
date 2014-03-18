@@ -118,6 +118,8 @@ gargoyle.register(HostConditionSet())
 
 class Pebble(ConditionSet):
 
+    pebble = String(label='Pebble')
+
     def get_namespace(self):
         return 'pebble'
 
