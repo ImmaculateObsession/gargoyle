@@ -8,11 +8,11 @@ gargoyle.builtins
 
 from gargoyle import gargoyle
 from gargoyle.conditions import ModelConditionSet, RequestConditionSet, Percent, String, Boolean, \
-    ConditionSet, OnOrAfterDate
+    ConditionSet, OnOrAfterDate, Field
 
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
-from django.core.validators import validate_ipv4_address
+from django.core.validators import validate_ipv4_address, ValidationError
 from django.http import HttpRequest
 
 import socket
@@ -115,10 +115,23 @@ class HostConditionSet(ConditionSet):
 
 gargoyle.register(HostConditionSet())
 
+class Integer(Field):
+
+    def validate(self, data):
+        value = data.get(self.name)
+        try:
+            int(value)
+        except ValueError:
+            raise ValidationError('Value must be an integer.')
+        return value
+
+    def is_active(self, condition, value):
+        return int(condition) == value
+
 
 class Pebble(ConditionSet):
 
-    pebble = String(label='Pebble')
+    pebble = Integer(label='Pebble')
 
     def get_namespace(self):
         return 'pebble'
