@@ -118,12 +118,15 @@ gargoyle.register(HostConditionSet())
 
 class Pebble(ConditionSet):
 
+    def get_namespace(self):
+        return 'pebble'
+
     def can_execute(self, instance):
         return isinstance(instance, (HttpRequest,))
 
-    def get_field_value(self, request, field_name):
+    def get_field_value(self, instance, field_name):
         if field_name == 'pebble':
-            return getattr(request, 'pebble')
+            return getattr(instance, 'pebble')
 
     def get_group_label(self):
         return 'Pebble'
